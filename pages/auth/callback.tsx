@@ -49,6 +49,10 @@ const AuthCallback: NextPage = () => {
       return fetch(youtubeDataApiUrl).then((res: any) => {
         const data = res.json()
         return data.then((value: any) => {
+          if (value.items === undefined) {
+            return ''
+          }
+
           return value.items.map((item: any, idx: number) => {
             const channelId = item.id
             const videoCount = item.statistics.videoCount
@@ -69,6 +73,7 @@ const AuthCallback: NextPage = () => {
       return
     }
     if (!verifyData || !youtubeData) {
+      router.push('/not-found')
       return
     }
     if (!isVerify) {
