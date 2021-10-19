@@ -50,10 +50,10 @@ const AuthCallback: NextPage = () => {
         const data = res.json()
         return data.then((value: any) => {
           if (value.items === undefined) {
-            return ''
+            return []
           }
 
-          return value.items.map((item: any, idx: number) => {
+          return value.items.map((item: any) => {
             const channelId = item.id
             const videoCount = item.statistics.videoCount
             const viewCount = item.statistics.viewCount
@@ -73,12 +73,17 @@ const AuthCallback: NextPage = () => {
       return
     }
     if (!verifyData || !youtubeData) {
-      router.push('/not-found')
       return
     }
     if (!isVerify) {
       return
     }
+
+    if (youtubeData.length === 0) {
+      router.push('/not-found')
+      return
+    }
+
     setAuth({ email: verifyData.email || '', accessToken })
     setYoutube(youtubeData)
     router.push('/select')
